@@ -5,14 +5,19 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/PetAPI/cmd/petapi/controllers"
+	pCtrl "github.com/PetAPI/cmd/petapi/controllers"
 	"github.com/gorilla/mux"
 )
 
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/pet", controllers.GetPets).Methods("GET")
+	petController := new(pCtrl.PetController)
+	router.HandleFunc("/pet", petController.RegisterPet).Methods("POST")
+	router.HandleFunc("/pet/{id}", petController.GetPetById).Methods("GET")
+	router.HandleFunc("/pet/{id}", petController.UpdatePetById).Methods("PUT")
+	router.HandleFunc("/pet/{id}/uploadimage", petController.UploadPetImageById).Methods("POST")
+	router.HandleFunc("/pet/{id}", petController.DeletePet).Methods("DELETE")
 
 	port := os.Getenv("PORT")
 	if port == "" {
