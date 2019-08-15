@@ -61,7 +61,6 @@ func (repo *PetRepository) UploadPetImage(id int, image string) error {
 }
 
 func (repo *PetRepository) Delete(id int) error {
-	// pet := m.Pet{}
 	err := m.Db.Unscoped().Where("id=?", id).Delete(&m.Pet{})
 
 	return err.Error

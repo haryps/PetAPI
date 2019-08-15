@@ -34,6 +34,9 @@ func (petCtrl *PetController) RegisterPet(w http.ResponseWriter, r *http.Request
 	}
 
 	err = petCtrl.petRepo.Register(pet)
+	if err != nil {
+		panic(err)
+	}
 	resp := u.Message(true, "success")
 	u.Respond(w, resp)
 }
