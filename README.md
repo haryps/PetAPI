@@ -41,7 +41,9 @@ This is web api for Pet store created using Go language.
 ## Setup Instructions & Deployment
 
 1. Database connection string is still hardcoded, so please modify: cmd/petapi/models/init.go
+   Current connection string: "root:MyNewPass@tcp(127.0.0.1:3306)/petapi?charset=utf8&parseTime=True&loc=Local"
 2. Build project: go build cmd/petapi/petapi.go
 3. Run project: go run cmd/petapi/petapi.go
+4. Api URL: http://localhost:8000/pet
 
 ---
