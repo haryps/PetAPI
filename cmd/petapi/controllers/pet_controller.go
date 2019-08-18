@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 
@@ -92,13 +93,26 @@ func (petCtrl *PetController) UploadPetImageById(w http.ResponseWriter, r *http.
 		panic(err)
 	}
 
-	file, handler, err := r.FormFile("image")
+	err = r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		panic(err)
 	}
-	defer file.Close()
 
-	err = petCtrl.petRepo.UploadPetImage(id, handler.Filename)
+	//Enable controller to get multiple value of file and text values
+	fileNames := []string{}
+	for _, value := range r.MultipartForm.File {
+		for _, arrVal := range value {
+			fileNames = append(fileNames, arrVal.Filename)
+		}
+	}
+
+	for _, value := range r.MultipartForm.Value {
+		for _, arrVal := range value {
+			fileNames = append(fileNames, arrVal)
+		}
+	}
+
+	err = petCtrl.petRepo.UploadPetImage(id, strings.Join(fileNames, "; "))
 	if err != nil {
 		panic(err)
 	}
